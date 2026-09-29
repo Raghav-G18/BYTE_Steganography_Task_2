@@ -1,37 +1,35 @@
-# BYTE Society Recruitment Task - Steganography
+# BYTE Steganography Task 2 - Solution & Write-up
 
-## Overview
-For this recruitment challenge, the objective was to inspect a corrupted PNG file, repair its file structure, fix corrupted header chunks, and extract/polish a hidden steganography flag.
+A complete technical breakdown and automated resolution for the steganography and file-repair challenge.
 
-- **Final Derived Flag:** `flag{g0t 1t in p1ain sight}`
-- **GitHub Repository Link:** https://github.com/Raghav-G18/BYTE_Steganography_Task_2.git
-
----
-
-## Step-by-Step Breakdown & Methodology
-
-### 1. Initial File Analysis & Header Verification
-- **The Problem:** The target image file (`repair.png`) was malformed and unreadable by standard image viewers due to structure corruption.
-- **Observation:** I inspected the raw file bytes and confirmed the standard 8-byte PNG magic signature (`89 50 4E 47 0D 0A 1A 0A`).
-- **Action:** I identified and stripped away extraneous trailing garbage bytes appended to the end of the data stream, allowing decoders to parse the file payload without crashing.
-
-### 2. Repairing the IHDR Chunk and CRC Mismatch
-- **The Mismatch:** The image dimensions inside the `IHDR` header chunk were corrupted, throwing off the layout.
-- **The Reasoning:** By testing and brute-forcing dimensions against expected aspect ratios, the true image height was isolated to **850 pixels**.
-- **Action:** I updated the header height field and recalculated the Cyclic Redundancy Check (CRC) checksum so standard image parsers would accept the integrity of the file.
-
-### 3. Polishing and Hidden Data Extraction
-- The hidden flag text was embedded via near-black pixel values and subtle variations near the bottom or across color/alpha layers.
-- **Automation Proof:** I wrote a modular Python script (`polish_flag.py`) utilizing the `Pillow` library to automate loading, contrast stretching, and channel analysis.
+## 📁 Repository Structure
+- `challenge.png` - The original corrupted task file.
+- `repair.png` - The structurally fixed and cleaned output image.
+- `polished_flag.png` - The contrast-amplified final image revealing the hidden flag.
+- `repair_and_extract.py` - The end-to-end automation script.
 
 ---
 
-## Repository Contents
-- `repair.png` — The successfully repaired base image.
-- `polish_flag.py` — The automated Python script used for image processing and extraction.
-- `README.md` — Project documentation and write-up.
+## 🛠️ Methodology & Approach
+
+### 1. Handling File Corruption & Trailing Junk Bytes
+- **Analysis:** Initial inspection of `challenge.png` showed it failed to render across standard image viewers due to structure corruption and extraneous trailing bytes appended to the EOF (End of File).
+- **Resolution:** Developed a binary parser script that locates the official PNG end marker signature (`IEND`: `49 45 4E 44 AE 42 60 82`) and strips all extraneous trailing data, generating a clean payload (`repair.png`).
+
+### 2. Header Normalization & Parsing
+- Patched internal chunks and normalized the image matrix using Pillow to ensure cross-platform compatibility and correct rendering.
+
+### 3. Steganography & Flag Extraction
+- **Observation:** The hidden text payload was embedded using extremely faint, near-black RGB pixel values blended into a dark background.
+- **Extraction:** Applied a contrast-stretching pixel transformation filter (`r * 64`, `g * 64`, `b * 64`) to force the hidden pixels to pop out brightly against the background.
 
 ---
 
-*Raghav Gupta*  
-*B.Tech CSE (sec-B)*
+## 🎯 Final Flag
+> **`flag{g0t 1t in p1ain sight}`**
+
+## 🚀 How to Run the Automation Script
+1. Place your target file as `challenge.png` in the root folder.
+2. Run the pipeline script via terminal:
+   ```bash
+   python3 repair_and_extract.py
