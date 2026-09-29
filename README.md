@@ -5,8 +5,8 @@ A complete technical breakdown and automated resolution for the steganography an
 ## 📁 Repository Structure
 - `challenge.png` - The original corrupted task file.
 - `repair.png` - The structurally fixed and cleaned output image.
-- `polished_flag.png` - The contrast-amplified final image revealing the hidden flag.
-- `repair_and_extract.py` - The end-to-end automation script.
+- `repair_and_extract.py` - The end-to-end automation script that cleans, repairs, and processes the file.
+- `README.md` - Technical write-up and methodology documentation.
 
 ---
 
